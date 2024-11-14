@@ -27,7 +27,7 @@ const App = () => {
     try {
       const response = await search(query);
 
-      console.log("Resultados de búsqueda:", response.data);
+      // console.log("Resultados de búsqueda:", response.data.albums);
       setSearchResults(response.data);
       setSelectedGenre(null);
       setSelectedArtist(null);
@@ -68,6 +68,21 @@ const App = () => {
                 <div key={album.id} onClick={() => handleAlbumClick(album.id)} style={{ cursor: 'pointer' }}>
                   <img src={`http://localhost:3000/uploads/albums/${album.id}.jpg`} alt={album.title} style={{ width: '100px', height: '100px' }} />
                   <p>{album.title}</p>
+                  <ul>
+                    {Array.isArray(album.songs) && album.songs.length > 0 ? (
+                      album.songs.map((song) => (
+                        <li key={song.id}>
+                          {song.title}
+                          <audio controls>
+                            <source src={`http://localhost:3000/uploads/songs/${song.id}.mp3`} type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                          </audio>
+                        </li>
+                      ))
+                    ) : (
+                      <li>No hay canciones disponibles</li>
+                    )}
+                  </ul>
                 </div>
               ))}
             </div>

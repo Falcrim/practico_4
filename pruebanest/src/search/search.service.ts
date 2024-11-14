@@ -17,7 +17,7 @@ export class SearchService {
         private albumRepository: Repository<Album>,
         @InjectRepository(Song)
         private songRepository: Repository<Song>,
-    ) {}
+    ) { }
 
     async searchAll(query: string) {
         const genres = await this.genreRepository.find({
@@ -30,6 +30,7 @@ export class SearchService {
 
         const albums = await this.albumRepository.find({
             where: { title: Like(`%${query}%`) },
+            relations: ["artist", "songs"],
         });
 
         const songs = await this.songRepository.find({
